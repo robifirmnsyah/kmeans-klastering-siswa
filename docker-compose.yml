@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db1
+    environment:
+      MYSQL_ROOT_PASSWORD: admin123  # Ganti dengan password root yang Anda inginkan
+      MYSQL_DATABASE: klastering_siswa        # Nama database yang ingin dibuat
+      MYSQL_USER: admin            # Nama user database
+      MYSQL_PASSWORD: admin123     # Password user
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin1
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      PMA_USER: admin             # Nama user MySQL (sesuai yang di atas)
+      PMA_PASSWORD: admin123       # Password user MySQL
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

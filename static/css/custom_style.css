@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    font-family: "Inter", sans-serif;
+}
+
+.icon-text-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Style untuk seluruh container */
+.container-fluid {
+    padding: 20px;
+}
+
+/* Style untuk kolom Total Cluster */
+.total-cluster {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.total-cluster .col-md-3, .total-cluster .col-md-9 {
+    padding: 0;
+}
+
+/* Memperbaiki ukuran card agar lebih kecil */
+.total-cluster .card {
+    padding: 15px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style untuk icon pada card */
+.icon-container i {
+    font-size: 25px;
+}
+
+/* Text container */
+.text-container {
+    margin-left: 10px;
+}
+
+/* Style untuk grafik */
+.grafik-cluster {
+    margin-top: 20px;
+}
+
+.grafik-cluster .card {
+    padding: 20px;
+}
+
+/* Style khusus untuk canvas chart */
+#grafik-cluster #clusterChart {
+    height: 300px;
+    width: 100%;
+}
+
+/* Media query untuk responsivitas */
+@media (max-width: 768px) {
+    .total-cluster {
+        flex-direction: column;
+    }
+
+    .grafik-cluster .card {
+        width: 100%;
+    }
+}
+
+.icon-sidebar {
+    margin-right: 10px; /* Jarak antara ikon dan teks */
+    width: 30px; /* Tentukan lebar ikon, sesuaikan jika perlu */
+    text-align: center; /* Menyelaraskan ikon ke tengah */
+}
+
+.text-container {
+    flex-grow: 1; /* Membuat teks mengisi ruang yang tersisa */
+}
+
+.card-body i {
+    margin-right: 10px; /* Jarak antara ikon dan teks */
+}
+
+.icon-container {
+    margin-right: 10px; /* Atur jarak antara ikon dan teks */
+    display: flex;
+    align-items: center; /* Pusatkan ikon secara vertikal */
+}
+
+.text-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-container h5 {
+    margin-bottom: 0;  /* Menghapus margin default pada judul */
+}
+
+.text-container p {
+    margin-top: 5px;  /* Menambahkan sedikit jarak antara angka dan teks */
+}
+
+.list-group-item i {
+    padding-right: 10px; /* Menambahkan jarak antara ikon dan teks */
+}

@@ -1,0 +1,88 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card mt-3 p-4">
+        {% if session['role'] == 'admin' %}
+        <h3>Daftar Pengguna</h3>
+        <div class="mt-4">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>NIP</th>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ user.nip }}</td>
+                        <td>{{ user.nama }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <a href="{{ url_for('edit_user', user_id=user.nip) }}" class="btn btn-warning">Edit</a>
+                            
+                            <!-- Tombol untuk memicu modal delete -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                    data-user_id="{{ user.nip }}" data-user_name="{{ user.nama }}">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>                                               
+            </table>
+        </div>
+        <div class="mt-3">
+            <a href="{{ url_for('add_user') }}" class="btn btn-primary">
+                <i class="fas fa-user-plus"></i> Add User
+            </a>
+        </div>
+        {% else %}
+            <p>Anda tidak memiliki akses untuk melihat daftar pengguna.</p>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus Pengguna</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus pengguna <strong><span id="userName"></span></strong>?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" action="{{ url_for('delete_user') }}" method="POST">
+                    <input type="hidden" name="user_id" id="deleteUserId">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Menyisipkan data ke dalam modal saat tombol Delete diklik
+    const deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        
+        // Mengambil data dari tombol yang diklik
+        const userId = button.getAttribute('data-user_id');
+        const userName = button.getAttribute('data-user_name');
+        
+        // Mengatur nilai input dan teks di dalam modal
+        document.getElementById('deleteUserId').value = userId;
+        document.getElementById('userName').textContent = userName;
+    });
+</script>
+{% endblock %}

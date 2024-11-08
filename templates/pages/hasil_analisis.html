@@ -1,0 +1,92 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card mt-3 p-4">
+        <h3>Hasil Analisis Data</h3>
+        <div class="mt-4">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Kelas</th>
+                        <th>Jurusan</th>
+                        <th>Semester</th>
+                        <th>Tahun Ajaran</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in enumerate(data, 1) %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ row.kelas }}</td>
+                        <td>{{ row.jurusan }}</td>
+                        <td>{{ row.semester }}</td>
+                        <td>{{ row.tahun_ajaran }}</td>
+                        <td>
+                            <a href="{{ url_for('hasil_klastering', kelas=row.kelas, jurusan=row.jurusan, semester=row.semester, tahun_ajaran=row.tahun_ajaran) }}" class="btn btn-primary">Detail</a>
+                            
+                            <!-- Tombol untuk memicu modal delete -->
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" 
+                                    data-kelas="{{ row.kelas }}" 
+                                    data-jurusan="{{ row.jurusan }}" 
+                                    data-semester="{{ row.semester }}" 
+                                    data-tahun_ajaran="{{ row.tahun_ajaran }}">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>                
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menghapus data ini?
+            </div>
+            <div class="modal-footer">
+                <form id="deleteForm" action="{{ url_for('delete_hasil_analisis') }}" method="POST">
+                    <input type="hidden" name="kelas" id="deleteKelas">
+                    <input type="hidden" name="jurusan" id="deleteJurusan">
+                    <input type="hidden" name="semester" id="deleteSemester">
+                    <input type="hidden" name="tahun_ajaran" id="deleteTahunAjaran">
+                    <input type="hidden" name="id_user" value="{{ session['nip'] }}">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Menyisipkan data ke dalam modal saat tombol Delete diklik
+    const deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        
+        // Mengambil data dari tombol yang diklik
+        const kelas = button.getAttribute('data-kelas');
+        const jurusan = button.getAttribute('data-jurusan');
+        const semester = button.getAttribute('data-semester');
+        const tahunAjaran = button.getAttribute('data-tahun_ajaran');
+        
+        // Mengatur nilai input di form modal
+        document.getElementById('deleteKelas').value = kelas;
+        document.getElementById('deleteJurusan').value = jurusan;
+        document.getElementById('deleteSemester').value = semester;
+        document.getElementById('deleteTahunAjaran').value = tahunAjaran;
+    });
+</script>
+{% endblock %}

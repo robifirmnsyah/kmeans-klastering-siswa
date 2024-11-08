@@ -1,0 +1,71 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="container-fluid card mt-3 p-4">
+        <h3 class="">Klaster & Iterasi</h3>
+        <p>
+            Menentukan Klaster dan maksimal Iterasi
+        </p>
+        <hr>
+        {% if pesan %}
+        <div class="alert alert-success" role="alert">
+            {{ pesan }}
+        </div>
+        {% endif %}
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="klaster" class="form-label">Masukan jumlah Klaster</label>
+                <input type="number" class="form-control" name="klaster" id="klaster" required>
+            </div>
+            <div class="mb-3">
+                <label for="iterasi" class="form-label">Masukan maksimal Iterasi</label>
+                <input type="number" class="form-control" name="iterasi" id="iterasi" required>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+            <div class="mb-3 mt-3">
+                <h5>Parameter Opsional</h5>
+                <small class="text-danger">Defaultnya semuda digunakan, dan jika pilih harap MINIMAL 2 attribut</small>
+                <div class="table-responsive">
+                    <table class="table  table-bordered">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input name="mapel1" class="form-check-input" type="checkbox" value="mapel1" id="flexCheckChecked" checked>
+                                </td>
+                                <td>Nilai Matematika</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="mapel2" class="form-check-input" type="checkbox" value="mapel2" id="flexCheckChecked" checked>
+                                </td>
+                                <td>Nilai Bahasa Indonesia</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="mapel3" class="form-check-input" type="checkbox" value="mapel3" id="flexCheckChecked" checked>
+                                </td>
+                                <td>Nilai Bahasa Inggris</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="mapel4" class="form-check-input" type="checkbox" value="mapel4" id="flexCheckChecked" checked>
+                                </td>
+                                <td>Nilai IPA</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input name="mapel5" class="form-check-input" type="checkbox" value="mapel5" id="flexCheckChecked" checked>
+                                </td>
+                                <td>Nilai IPS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
