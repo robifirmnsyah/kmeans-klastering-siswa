@@ -3,3 +3,4 @@ Ini adalah web app yang dibangun dengan python + flask dan meruapakan aplikasi k
 Siapapun boleh menggunakan, meniru, maupun memodifikasi project ini dan disebarluaskan lagi untuk kebutuhan apapun
 
 Link demo dan panduan instalasi : https://youtu.be/hsfGHZkXjyg
+# kmeans-klastering-siswa
