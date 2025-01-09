@@ -1,0 +1,102 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card mt-3 p-3 p-md-4">
+        <h3>Hasil Analisis Data</h3>
+        
+        <!-- Filter Form -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="GET" class="row row-cols-1 row-cols-md-auto g-3 align-items-end">
+                    {% if role == 'admin' %}
+                    <div class="col">
+                        <label for="kelas" class="form-label">Kelas:</label>
+                        <select name="kelas" id="kelas" class="form-select">
+                            <option value="">Semua Kelas</option>
+                            {% for k in kelas_list %}
+                                <option value="{{ k.id_kelas }}" {% if k.id_kelas == selected_kelas %}selected{% endif %}>
+                                    {{ k.id_kelas }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="col">
+                        <label for="jurusan" class="form-label">Jurusan:</label>
+                        <select name="jurusan" id="jurusan" class="form-select">
+                            <option value="">Semua Jurusan</option>
+                            {% for j in jurusan_list %}
+                                <option value="{{ j.nama_jurusan }}" {% if j.nama_jurusan == selected_jurusan %}selected{% endif %}>
+                                    {{ j.nama_jurusan }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="semester" class="form-label">Semester:</label>
+                        <select name="semester" id="semester" class="form-select">
+                            <option value="">Semua Semester</option>
+                            {% for s in semester_list %}
+                                <option value="{{ s.semester }}" {% if s.semester == selected_semester %}selected{% endif %}>
+                                    {{ s.semester }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <label for="tahun_ajaran" class="form-label">Tahun Ajaran:</label>
+                        <select name="tahun_ajaran" id="tahun_ajaran" class="form-select">
+                            <option value="">Semua Tahun</option>
+                            {% for t in tahun_list %}
+                                <option value="{{ t.tahun_ajaran }}" {% if t.tahun_ajaran == selected_tahun %}selected{% endif %}>
+                                    {{ t.tahun_ajaran }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark">
+                    <tr class="table-primary">
+                        <th>No</th>
+                        <th>Kelas</th>
+                        <th>Jurusan</th>
+                        <th>Semester</th>
+                        <th>Tahun Ajaran</th>
+                        <th style="min-width: 120px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for index, row in enumerate(data, 1) %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ row.id_kelas }}</td>
+                        <td>{{ row.nama_jurusan }}</td>
+                        <td>{{ row.semester }}</td>
+                        <td>{{ row.tahun_ajaran }}</td>
+                        <td>
+                            <div class="d-flex gap-2 flex-wrap">
+                                <a href="{{ url_for('hasil_klastering', kelas=row.id_kelas, jurusan=row.nama_jurusan, semester=row.semester, tahun_ajaran=row.tahun_ajaran) }}" 
+                                   class="btn btn-primary btn-sm">Detail</a>
+                                
+                                <a href="{{ url_for('delete_hasil_analisis', nip=session['nip'], kelas=row.id_kelas, jurusan=row.nama_jurusan, semester=row.semester, tahun_ajaran=row.tahun_ajaran) }}" 
+                                   class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

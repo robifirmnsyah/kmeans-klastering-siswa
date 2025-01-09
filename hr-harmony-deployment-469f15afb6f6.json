@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hr-harmony-deployment",
+  "private_key_id": "469f15afb6f65ac2ebffdbbdd323c7bfbe2c07dd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC0zrhr97vxKwxh\ncDC+ET/Vn899IJQwJP6DYOEw2yMoYcXdcs9QcBGeAfmEjYZejAZohPrKcrjsDWEF\nJGGvMQKvTT5xdBThl7zZQg+zm8cmzbvvv/sDhj6MHsTjkFhStEJXoB5QlxBbW5Bw\nHkYqFCt6WFc+F4EUWHoU3JY3+QTq+Zo4K6kI4syC97NiQCd+z1Ue2xOoageAHZl4\nZ8MUoLwWLJbjKT4fx34Rve7jd3o8xN+7Wd/YdVBmRRus6AteU0q/n1ICh3RTwbTY\nRp+yoYZemTduGE99pxogPooKCmS6B7NeSBF8gBNWOGtj7rPN/uBaGdpvKey1cU+c\npVeILF2NAgMBAAECggEAAR6+ubyBJ49Stk/RnXvR32rsCCRphprUENBK1NimsRtZ\n9HM/oYnwMgBlIVMXIALSD1ezjgmD58J1dWiySjmNgLSDzIQhlPwxqU7ldgFjDHR9\n05Bm57CvNoMCST6drXV8a7qMNYeaDFbW4DrvyFbzpgBiGfpfTFb3+qUbMSGTzDjY\n91FYCjqCiVtTUWzjiRAvk3M/0Yo78RFMv3g8SWDOhkBbWg3agn7AiTv/jg1z7zoM\nakqR6ZDnEEICvjsX0WvcuMbZ2xV2zTnJX6i1jClBlG9h39ML34OCv6uhrM5ROWdy\ndzUrkdWFPwwB2Emc4D6BHinQhPGqqiejcI7hsgCewQKBgQDYPaYIzwAkVWT5lZtY\nlZP9j2AZ6/q9LrTMNXQbAqpnkzJec0It2+frCAux7GLuecjlQgChGRYiPupqHpot\nQ8daMhmwRgVB70bXHgz3RztIssGi1G/FjfgCaKUdjLz53IlHVERuUbWYMWdpWaEp\n4uuL70Gfk0bTZzn57sMKSLTQSQKBgQDWDT4mK6qv1B+KqnbNriL6eEKwGHXsLVD1\nIYsj5mVd7t/86DTlKx36dI0rRyd4argbDEYzT+HvoQCGhtdLfl+2I9w/abS2XxCO\noPOJmtBV05cR8p1hOnn2LymZnNWYcJ4IACe3+OvZXgkxxovb+ploLHayLwBZu71D\n5m4fSp4rJQKBgGhzHsgSdNcYCHYmNatMVPedUaYzviGzddFN4I9LclQlXacRtV3B\nYvy8HioLLJ5UZR2YDAXEwFQ6X7Byp7ZFjv2aRZ5HtDJtCaLO+SRYW+J5td6ZDoQ2\nVx2Svm7PlFh8ljLGGWfQQA8Ljg/tI1PAMFafcutJkGR88BwxoDRPekdBAoGAW0xA\nsuUzI1XVsj5s9+OLVcvPne6A9aCKhFOvVjuiBsOpU+TzEsAmRDpMMCZkRm82YYsF\nskMjOiMw5zBCShf32OdIvN9oTdUUadFqrsmSjNj3+ZbC28KmXIPXOYb0b9WxAfaW\n+lg4uHjscQefhc9IeW9lnTCA9MUnv/tcAwq/leUCgYEA1INn3wDMdMX01Qo3kP3q\nrBHKbak3JiC/n2fucVP8yhz4z4ThEKOkrKRHQnz/ptMOUuwnU1AUm++LWM46mQkv\nUfwZNv4X8bv0dVxI4bFR3AZ0Wsp7uCWbgrzNDDsYGNSoq1svBEvQ51osfAhCgHAo\nd8am1kIzBbG+6gxYS4HKEik=\n-----END PRIVATE KEY-----\n",
+  "client_email": "external-billing-viewer@hr-harmony-deployment.iam.gserviceaccount.com",
+  "client_id": "100001336793755959639",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/external-billing-viewer%40hr-harmony-deployment.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

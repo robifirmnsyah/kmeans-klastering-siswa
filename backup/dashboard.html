@@ -1,0 +1,144 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+
+<form method="GET" action="{{ url_for('dashboard') }}">
+    <label for="jurusan">Pilih Jurusan:</label>
+    <select id="jurusan" name="jurusan">
+        <option value="">-- Pilih Jurusan --</option>
+        {% for jurusan in jurusan_list %}
+            <option value="{{ jurusan['nama_jurusan'] }}" {% if jurusan['nama_jurusan'] == request.args.get('jurusan') %}selected{% endif %}>
+                {{ jurusan['nama_jurusan'] }}
+            </option>
+        {% endfor %}
+    </select>
+    <button type="submit">Tampilkan</button>
+</form>
+
+<div class="container-fluid">
+    <h4>Rekayasa Perangkat unak</h4>
+    <div class="row mt-4">
+        <!-- Total Students Card (Smaller) -->
+        <div class="col-md-2 d-flex flex-column">
+            <div class="card text-white bg-primary mb-2" style="flex: 1; height: 120px;">
+                <div class="card-body p-2">
+                    <div class="d-flex">
+                        <div class="icon-container">
+                            <i class="fas fa-users" style="font-size: 25px;"></i>
+                        </div>
+                        <div class="text-container ml-2">
+                            <h6 class="card-title">Total Siswa</h6>
+                            <p class="card-text" style="font-size: 20px;">{{ total_siswa }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cluster Count Cards (Smaller) -->
+        <div class="col-md-3 d-flex flex-column">
+            <div class="card text-white bg-success mb-2" style="flex: 1; height: 120px;">
+                <div class="card-body p-2">
+                    <div class="d-flex">
+                        <div class="icon-container">
+                            <i class="fas fa-users" style="font-size: 20px;"></i>
+                        </div>
+                        <div class="text-container ml-2">
+                            <h6 class="card-title">Jumlah Klaster 1</h6>
+                            <p class="card-text" style="font-size: 18px;">{{ jumlah_klaster_1 }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card text-white bg-warning mb-2" style="flex: 1; height: 120px;">
+                <div class="card-body p-2">
+                    <div class="d-flex">
+                        <div class="icon-container">
+                            <i class="fas fa-users" style="font-size: 20px;"></i>
+                        </div>
+                        <div class="text-container ml-2">
+                            <h6 class="card-title">Jumlah Klaster 2</h6>
+                            <p class="card-text" style="font-size: 18px;">{{ jumlah_klaster_2 }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card text-white bg-danger mb-2" style="flex: 1; height: 120px;">
+                <div class="card-body p-2">
+                    <div class="d-flex">
+                        <div class="icon-container">
+                            <i class="fas fa-users" style="font-size: 20px;"></i>
+                        </div>
+                        <div class="text-container ml-2">
+                            <h6 class="card-title">Jumlah Klaster 3</h6>
+                            <p class="card-text" style="font-size: 18px;">{{ jumlah_klaster_3 }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yearly Cluster Chart (Right) -->
+        <div class="col-md-7">
+            <div class="card p-3 mb-2" style="height: 300px; width: 600px;">
+                <h6 class="text-center">Jumlah Siswa per Klaster Selama 5 Tahun Ajaran Terakhir</h6>
+                <canvas id="clusterChart" style="height: 250px;"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Data tahun ajaran dan jumlah siswa per klaster yang dikirim dari Flask
+const years = {{ years | tojson }};
+const dataPerTahun = {{ data_per_tahun | tojson }};
+
+// Siapkan data untuk Chart.js (Grafik 5 Tahun)
+const labels = years;
+const datasets = [
+    {
+        label: 'Klaster 1',
+        data: years.map(year => dataPerTahun[year][1] || 0),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+    },
+    {
+        label: 'Klaster 2',
+        data: years.map(year => dataPerTahun[year][2] || 0),
+        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+        borderColor: 'rgba(255, 159, 64, 1)',
+        borderWidth: 1
+    },
+    {
+        label: 'Klaster 3',
+        data: years.map(year => dataPerTahun[year][3] || 0),
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1
+    }
+];
+
+// Konfigurasi Chart.js (Grafik 5 Tahun)
+const ctx = document.getElementById('clusterChart').getContext('2d');
+const clusterChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: datasets
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        responsive: true
+    }
+});
+</script>
+{% endblock %}

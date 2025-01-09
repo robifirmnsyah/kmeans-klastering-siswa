@@ -1,0 +1,73 @@
+<div class="border-end bg-white" id="sidebar-wrapper" style="position: fixed; height: 100vh; overflow-y: auto; width: 250px; z-index: 1030;">
+    <div class="sidebar-heading border-bottom bg-light d-flex align-items-center" style="height: 80px; width: 100%; padding-left: 10px;">
+        <img src="{{ url_for('static', filename='assets/logo.svg') }}" alt="Logo" style="height: 40px; width: auto; margin-right: 10px;"> <!-- Logo Image -->
+        <div>
+            <h5 class="mb-0">Klastering Siswa</h5>
+            <small style="font-size: 0.75rem;">SMK Prakarya Internasional</small>
+        </div>
+    </div>
+    <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('dashboard') }}">
+            <div class="icon-text-container">
+                <div class="icon-sidebar">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <div class="text-container">
+                    Dashboard
+                </div>
+            </div>
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('home') }}">
+            <div class="icon-text-container">
+                <div class="icon-sidebar">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="text-container">
+                    Input Data
+                </div>
+            </div>
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('hasil_analisis') }}">
+            <div class="icon-text-container">
+                <div class="icon-sidebar">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="text-container">
+                    Hasil Analisis
+                </div>
+            </div>
+        </a>
+        {% if session['role'] == 'admin' %}
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('jurusan') }}">
+                <div class="icon-text-container">
+                    <div class="icon-sidebar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="text-container">
+                        Jurusan
+                    </div>
+                </div>
+            </a>
+            <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('users') }}">
+                <div class="icon-text-container">
+                    <div class="icon-sidebar">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="text-container">
+                        Users
+                    </div>
+                </div>
+            </a>
+        {% endif %}
+        <a class="list-group-item list-group-item-action list-group-item-light p-3" href="{{ url_for('logout') }}">
+            <div class="icon-text-container">
+                <div class="icon-sidebar">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+                <div class="text-container">
+                    Keluar
+                </div>
+            </div>
+        </a>
+    </div>             
+</div>

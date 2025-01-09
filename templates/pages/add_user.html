@@ -1,0 +1,187 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid d-flex justify-content-center">
+    <div class="container card mt-3 p-4" style="max-width: 700px;">
+        <h3 class="mb-3 text-center">Add New User</h3>
+
+        {% if success_message %}
+        <div class="alert alert-success" role="alert">
+            {{ success_message }}
+        </div>
+        {% endif %}
+
+        <form method="POST">
+            <!-- Baris untuk NIP dan Nama -->
+            <div class="row mb-3">
+                <div class="col d-flex justify-content-end">
+                    <div>
+                        <label for="nip" class="form-label">NIP</label>
+                        <input type="text" class="form-control" id="nip" name="nip" required style="width: 300px;">
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-start">
+                    <div>
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" class="form-control" id="nama" name="nama" required style="width: 300px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baris untuk Role -->
+            <div class="row mb-3 d-flex justify-content-center">
+                <div style="margin-left: 20px;">
+                    <label class="form-label">Role</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="role" id="roleAdmin" value="admin">
+                        <label class="form-check-label" for="roleAdmin">Admin</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="role" id="roleUser" value="user" checked>
+                        <label class="form-check-label" for="roleUser">User</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baris untuk Jurusan dan Kelas -->
+            <div id="jurusanKelasSection">
+                <div class="row mb-3">
+                    <div class="col d-flex justify-content-end">
+                        <div>
+                            <label for="jurusan" class="form-label">Jurusan</label>
+                            <select class="form-select" id="jurusan" name="jurusan" style="width: 300px;">
+                                <option value="" disabled selected>Pilih Jurusan</option>
+                                {% for jurusan in jurusan_list %}
+                                <option value="{{ jurusan.nama_jurusan }}" data-id="{{ jurusan.id_jurusan }}">{{ jurusan.nama_jurusan }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col d-flex justify-content-start">
+                        <div>
+                            <label for="kelas" class="form-label">Kelas</label>
+                            <select class="form-select" id="kelas" name="kelas" style="width: 300px;">
+                                <option value="" disabled selected>Pilih Kelas</option>
+                                <option value="X">X</option>
+                                <option value="XI">XI</option>
+                                <option value="XII">XII</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Baris untuk Kelas Detail dan Username -->
+                <div class="row mb-3">
+                    <div class="col d-flex justify-content-end">
+                        <div>
+                            <label for="kelas_detail" class="form-label">Kelas Detail</label>
+                            <select class="form-select" id="kelas_detail" name="kelas_detail" style="width: 300px;">
+                                <option value="" disabled selected>Pilih Kelas Detail</option>
+                                {% for kelas in kelas_list %}
+                                <option value="{{ kelas.id_kelas }}" data-jurusan="{{ kelas.id_jurusan }}" data-kelas="{{ kelas.kelas }}">{{ kelas.id_kelas }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baris untuk Username -->
+            <div class="row mb-3">
+                <div class="col d-flex justify-content-start">
+                    <div>
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" name="username" required style="width: 300px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baris untuk Email dan Password -->
+            <div class="row mb-3">
+                <div class="col d-flex justify-content-end">
+                    <div>
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required style="width: 300px;">
+                    </div>
+                </div>
+                <div class="col d-flex justify-content-start">
+                    <div>
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" required style="width: 300px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Baris untuk Button -->
+            <div class="row mb-3 d-flex justify-content-center">
+                <div>
+                    <button type="submit" class="btn btn-primary" style="width: 100px;">Add User</button>
+                    <a href="{{ url_for('users') }}" class="btn btn-secondary" style="width: 100px; margin-left: 10px;">
+                        Back
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if success_message %}
+<script>
+    setTimeout(function() {
+        window.location.href = "{{ url_for('users') }}";
+    }, 1000);
+</script>
+{% endif %}
+
+<script>
+    document.getElementById('jurusan').addEventListener('change', function() {
+        filterKelasDetail();
+    });
+
+    document.getElementById('kelas').addEventListener('change', function() {
+        filterKelasDetail();
+    });
+
+    document.getElementById('roleAdmin').addEventListener('change', function() {
+        document.getElementById('jurusanKelasSection').style.display = 'none';
+        document.getElementById('jurusan').removeAttribute('required');
+        document.getElementById('kelas').removeAttribute('required');
+        document.getElementById('kelas_detail').removeAttribute('required');
+        document.getElementById('kelas_detail').value = 'All Class';
+    });
+
+    document.getElementById('roleUser').addEventListener('change', function() {
+        document.getElementById('jurusanKelasSection').style.display = 'block';
+        document.getElementById('jurusan').setAttribute('required', 'required');
+        document.getElementById('kelas').setAttribute('required', 'required');
+        document.getElementById('kelas_detail').setAttribute('required', 'required');
+        document.getElementById('kelas_detail').value = '';
+    });
+
+    function filterKelasDetail() {
+        const selectedJurusan = document.getElementById('jurusan').selectedOptions[0].getAttribute('data-id');
+        const selectedKelas = document.getElementById('kelas').value;
+        const kelasDetailSelect = document.getElementById('kelas_detail');
+
+        for (let option of kelasDetailSelect.options) {
+            if (option.value === "") continue; // Skip the default option
+            const jurusan = option.getAttribute('data-jurusan');
+            const kelas = option.getAttribute('data-kelas');
+            option.style.display = (jurusan === selectedJurusan && kelas === selectedKelas) ? 'block' : 'none';
+        }
+
+        // Reset the selected value if the current selection is not valid
+        if (kelasDetailSelect.selectedIndex !== -1) {
+            const selectedOption = kelasDetailSelect.options[kelasDetailSelect.selectedIndex];
+            if (selectedOption.style.display === 'none') {
+                kelasDetailSelect.selectedIndex = 0;
+            }
+        }
+    }
+
+    // Trigger the filter function on page load to ensure the correct options are displayed
+    document.addEventListener('DOMContentLoaded', function() {
+        filterKelasDetail();
+    });
+</script>
+{% endblock %}

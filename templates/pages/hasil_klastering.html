@@ -1,0 +1,229 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="container-fluid card mt-3 p-3 p-md-4">
+        <!-- Header Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mx-2 mx-md-3 gap-3">
+            <h3 class="mb-0">Hasil Analisa dan Clustering</h3>
+            <a href="{{ url_for('download_pdf') }}" class="btn btn-danger">Download PDF</a>
+        </div>
+        
+        <!-- Info Table Section -->
+        <div class="container mt-3 px-2 px-md-3">
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <tr class="table-primary">
+                        <td class="w-15"><strong>Kelas</strong></td>
+                        <td class="w-35">: {{ kelas }}</td>
+                        <td class="w-15"><strong>Semester</strong></td>
+                        <td class="w-35">: {{ semester }}</td>
+                    </tr>
+                    <tr>
+                        <td class="w-15"><strong>Jurusan</strong></td>
+                        <td class="w-35">: {{ nama_jurusan }}</td>
+                        <td class="w-15"><strong>Tahun Ajaran</strong></td>
+                        <td class="w-35">: {{ tahun_ajaran }}</td>
+                    </tr>
+                    
+                    {% if mapel %}
+                        <tr>
+                            <td class="w-15"><small class="text-muted">mapel1</small></td>
+                            <td class="w-35"><small class="text-muted">: {{ mapel.mapel1 }}</small></td>
+                            <td class="w-15"><small class="text-muted">mapel2</small></td>
+                            <td class="w-35"><small class="text-muted">: {{ mapel.mapel2 }}</small></td>
+                        </tr>
+                        <tr>
+                            <td class="w-15"><small class="text-muted">mapel3</small></td>
+                            <td class="w-35"><small class="text-muted">: {{ mapel.mapel3 }}</small></td>
+                            <td class="w-15"><small class="text-muted">mapel4</small></td>
+                            <td class="w-35"><small class="text-muted">: {{ mapel.mapel4 }}</small></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4"><h6>Tidak ada mata pelajaran yang ditemukan untuk kelas ini.</h6></td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
+          
+        <!-- Chart dan Tabel Section -->
+        <div class="container px-2 px-md-3">
+            <hr>
+            <h6 class="text-center mb-4">Jumlah dan Jenis Cluster</h6>
+            <div class="row g-4">
+                <!-- Chart Column -->
+                <div class="col-12 col-lg-5">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
+                        <canvas id="myChart" style="max-width: 100%; max-height: 100%;"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Table Column -->
+                <div class="col-12 col-lg-7">
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class="align-middle">Cluster</th>
+                                    <th rowspan="2" class="align-middle">Jumlah</th>
+                                    <th colspan="4" class="align-middle">Rata-rata</th>
+                                    <th rowspan="2" class="align-middle">Data</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 150px;" class="align-middle">Mapel1</th>
+                                    <th style="width: 150px;" class="align-middle">Mapel2</th>
+                                    <th style="width: 150px;" class="align-middle">Mapel3</th>
+                                    <th style="width: 150px;" class="align-middle">Mapel4</th>
+                                </tr>
+                            </thead>
+                            <tbody id='table_cluster'>
+                            </tbody>
+                        </table>                                                                              
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cluster Results Section -->
+        <div class="mt-4" id="hasil_per_cluster" style="display:none;">
+            <h4 class="mb-3 px-2 px-md-3">Anggota Cluster <span id="cluster_ke"></span></h4>
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>NIS</th>
+                            <th>Nama Siswa</th>
+                            <th>Mapel 1</th>
+                            <th>Mapel 2</th>
+                            <th>Mapel 3</th>
+                            <th>Mapel 4</th>
+                            <th>Cluster</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data_per_cluster">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            getCluster();
+        });
+
+        // Fungsi untuk mendapatkan data cluster dari server
+        function getCluster() {
+            $.ajax({
+                url: "{{ url_for('jumlah_klaster') }}",
+                type: "GET",
+                data: {
+                    kelas: "{{ kelas }}",
+                    jurusan: "{{ jurusan }}",
+                    semester: "{{ semester }}",
+                    tahun_ajaran: "{{ tahun_ajaran }}"
+                },
+                dataType: "json",
+                success: function(data) {
+                    showCluster(data);
+                },
+                error: function(xhr, error) {
+                    alert('Error fetching cluster data.');
+                    console.log(xhr);
+                }
+            });
+        }
+        
+        // Menampilkan data cluster pada chart dan tabel
+        function showCluster(data) {
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.label,
+                    datasets: [{
+                        label: 'Hasil Clustering',
+                        data: data.jumlah,
+                        borderWidth: 1
+                    }]
+                }
+            });
+
+            const table_cluster = document.getElementById('table_cluster');
+            let innerTable = '';
+
+            // Menggabungkan data menjadi array dari objek untuk memudahkan pengurutan
+            const combinedData = data.label.map((label, index) => ({
+                cluster: label,
+                jumlah: data.jumlah[index],
+                rata_rata_mapel1: data.rata_rata_mapel1[index],
+                rata_rata_mapel2: data.rata_rata_mapel2[index],
+                rata_rata_mapel3: data.rata_rata_mapel3[index],
+                rata_rata_mapel4: data.rata_rata_mapel4[index], // Removed rata_rata_mapel5
+            }));
+
+            // Mengurutkan data berdasarkan cluster (konversi ke integer untuk urutan numerik)
+            combinedData.sort((a, b) => parseInt(a.cluster) - parseInt(b.cluster));
+
+            // Menghasilkan baris tabel berdasarkan data yang telah diurutkan
+            for (let i = 0; i < combinedData.length; i++) {
+                innerTable += "<tr>";
+                innerTable += "<td>" + combinedData[i].cluster + "</td>" +
+                            "<td>" + combinedData[i].jumlah + "</td>" +
+                            "<td>" + (combinedData[i].rata_rata_mapel1 !== null ? combinedData[i].rata_rata_mapel1.toFixed(2) : 'N/A') + "</td>" +
+                            "<td>" + (combinedData[i].rata_rata_mapel2 !== null ? combinedData[i].rata_rata_mapel2.toFixed(2) : 'N/A') + "</td>" +
+                            "<td>" + (combinedData[i].rata_rata_mapel3 !== null ? combinedData[i].rata_rata_mapel3.toFixed(2) : 'N/A') + "</td>" +
+                            "<td>" + (combinedData[i].rata_rata_mapel4 !== null ? combinedData[i].rata_rata_mapel4.toFixed(2) : 'N/A') + "</td>" +
+                            "<td><button type='button' class='btn btn-primary' onclick='showAnggotaCluster(\"" + combinedData[i].cluster + "\")'>Tampilkan</button></td>";
+                innerTable += "</tr>";
+            }
+            table_cluster.innerHTML = innerTable;   
+        }
+
+        // Menampilkan anggota per cluster
+        function showAnggotaCluster(clusterLabel) {
+            $.ajax({
+                url: "{{ url_for('anggota_klaster') }}",  // Endpoint Flask untuk mengambil anggota cluster
+                type: "GET",
+                data: {
+                    cluster: clusterLabel,
+                    kelas: "{{ kelas }}",
+                    jurusan: "{{ jurusan }}",
+                    semester: "{{ semester }}",
+                    tahun_ajaran: "{{ tahun_ajaran }}"
+                },
+                dataType: "json",
+                success: function(data) {
+                    const dataPerCluster = document.getElementById('data_per_cluster');
+                    let innerTable = '';
+                    for (let i = 0; i < data.length; i++) {
+                        innerTable += "<tr>";
+                        innerTable += "<td>" + data[i].nis + "</td>";
+                        innerTable += "<td>" + data[i].nama_siswa + "</td>";
+                        innerTable += "<td>" + data[i].nilai_mapel1 + "</td>";  // Corrected key
+                        innerTable += "<td>" + data[i].nilai_mapel2 + "</td>";  // Corrected key
+                        innerTable += "<td>" + data[i].nilai_mapel3 + "</td>";  // Corrected key
+                        innerTable += "<td>" + data[i].nilai_mapel4 + "</td>";  // Corrected key
+                        innerTable += "<td>" + data[i].cluster + "</td>";
+                        innerTable += "</tr>";
+                    }
+                    dataPerCluster.innerHTML = innerTable;
+                    document.getElementById('hasil_per_cluster').style.display = 'block'; // Tampilkan tabel
+                    document.getElementById('cluster_ke').textContent = clusterLabel;
+                },
+                error: function(xhr, error) {
+                    alert('Error fetching cluster members.');
+                    console.log(xhr);
+                }
+            });
+        }
+    </script>
+{% endblock %}

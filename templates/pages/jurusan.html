@@ -1,0 +1,104 @@
+{% extends 'layouts/main.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card mt-3 p-3 p-md-4">
+        <h3 class="mb-3 mb-md-0">Daftar Jurusan</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+                <thead class="table-dark text-center">
+                    <tr class="table-primary">
+                        <th style="width: 5%;">No</th>
+                        <th style="width: 27%; padding-left: 20px;">Nama Jurusan</th>
+                        <th style="width: 8%;">Kelas</th>
+                        <th style="width: 8%;">Jumlah Kelas</th>
+                        <th style="width: 42%; padding-left: 20px;">Daftar Kelas</th>
+                        <th style="width: 20%;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for jurusan in jurusan_list %}
+                    <tr>
+                        <td rowspan="3" class="text-center align-middle">{{ loop.index }}</td>
+                        <td rowspan="3" class="align-middle" style="padding-left: 20px;">{{ jurusan.nama_jurusan }}</td>
+                        <td class="text-center">X</td>
+                        <td class="text-center">{{ kelas_counts[jurusan.id_jurusan]['X'] }}</td>
+                        <td style="padding-left: 20px;"> 
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for kelas in kelas_details[jurusan.id_jurusan]['X'] %}
+                                <div class="card p-1 bg-primary text-white" style="width: auto; min-width: 60px; font-size: 0.875rem;">
+                                    <span>{{ kelas }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <form action="{{ url_for('add_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="X">
+                                <button type="submit" class="btn btn-success btn-sm">Add</button>
+                            </form>
+                            <form action="{{ url_for('delete_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="X">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">XI</td>
+                        <td class="text-center">{{ kelas_counts[jurusan.id_jurusan]['XI'] }}</td>
+                        <td style="padding-left: 20px;">
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for kelas in kelas_details[jurusan.id_jurusan]['XI'] %}
+                                <div class="card p-1 bg-primary text-white" style="width: auto; min-width: 60px; font-size: 0.875rem;">
+                                    <span>{{ kelas }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <form action="{{ url_for('add_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="XI">
+                                <button type="submit" class="btn btn-success btn-sm">Add</button>
+                            </form>
+                            <form action="{{ url_for('delete_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="XI">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">XII</td>
+                        <td class="text-center">{{ kelas_counts[jurusan.id_jurusan]['XII'] }}</td>
+                        <td style="padding-left: 20px;">
+                            <div class="d-flex flex-wrap gap-2">
+                                {% for kelas in kelas_details[jurusan.id_jurusan]['XII'] %}
+                                <div class="card p-1 bg-primary text-white" style="width: auto; min-width: 60px; font-size: 0.875rem;">
+                                    <span>{{ kelas }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <form action="{{ url_for('add_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="XII">
+                                <button type="submit" class="btn btn-success btn-sm">Add</button>
+                            </form>
+                            <form action="{{ url_for('delete_kelas') }}" method="POST" class="d-inline">
+                                <input type="hidden" name="id_jurusan" value="{{ jurusan.id_jurusan }}">
+                                <input type="hidden" name="kelas" value="XII">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
