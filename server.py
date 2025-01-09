@@ -19,11 +19,7 @@ app.secret_key = 'admin'
 db = connection.connect(
     host="localhost",
     user="admin",
-<<<<<<< HEAD
     password="admin123",
-=======
-    password="Admin123#",
->>>>>>> 582e07a7 (first commit)
     database="klastering_siswa"
 )
 
@@ -1055,8 +1051,4 @@ def logout():
     return redirect(url_for('login',pesan = pesan))
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    app.run(port=8000, debug=True)
-=======
     app.run(host='0.0.0.0', port=8000, debug=True)
->>>>>>> 582e07a7 (first commit)
